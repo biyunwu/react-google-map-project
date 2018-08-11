@@ -34,8 +34,8 @@ class GoogleMapsContainer extends React.Component {
 
         return (
             <Map
-                // item
-                // xs = { 12 }
+                item
+                xs = { 12 }
                 style = { style }
                 google = { this.props.google }
                 onClick = { this.onMapClick }
@@ -99,5 +99,5 @@ class GoogleMapsContainer extends React.Component {
     }
 }
 export default GoogleApiWrapper({
-    api: (process.env.AIzaSyDGmX9sBTOIe2vJ2vep_yFRJq5lNePrfUY)
+    apiKey: 'AIzaSyDGmX9sBTOIe2vJ2vep_yFRJq5lNePrfUY'
 })(GoogleMapsContainer)
