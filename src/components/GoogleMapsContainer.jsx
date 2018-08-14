@@ -1,13 +1,14 @@
 import React from 'react';
 import { GoogleApiWrapper, InfoWindow, Map, Marker } from 'google-maps-react';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 
 class GoogleMapsContainer extends React.Component {
     state = {
         showingInfoWindow: false,
         activeMarker: {},
-        selectedPlace: {}
+        selectedPlace: {},
+        // mapDimension: {}
+        // height: 0,
+        // width: 0
     }
 
 
@@ -26,7 +27,32 @@ class GoogleMapsContainer extends React.Component {
             });
         }
     }
+
+    // componentWillMount(){
+    //     this.getMapDimensions();
+    // }
+
+    // componentDidMount(){
+    //     // window.onresize = this.getMapDimensions
+    //     this.setState({height: this.props.mapDimensions.height, width: this.props.mapDimensions.width})
+    // }
+
+    // getMapDimensions = () => {
+    //     const w = Math.max(document.getElementById('header').clientWidth || 0);
+    //     const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    //     this.setState({mapDimension: {width: w, height: h}})
+    //     console.log(w, h)
+    // }
+    // getElementHeight = (elementId) => Math.max(document.getElementById(elementId).clientHeight)
+
     render() {
+        // const headerHeight = this.getElementHeight('header'), footerHeight = this.getElementHeight('footer')
+        // // console.log(this.props.isMobile)
+        // const isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
+        // const style = {
+        //     width: isMobile ? '100%' : `${this.props.mapDimensions.width * 2 / 3}px`,
+        //     height: isMobile? '50%' : `${this.props.mapDimensions.height - headerHeight - footerHeight}`
+        // }
         const style = {
             width: '100%',
             height: '100%'
@@ -40,60 +66,40 @@ class GoogleMapsContainer extends React.Component {
                 google = { this.props.google }
                 onClick = { this.onMapClick }
                 zoom = { 14 }
-                initialCenter = {{ lat: 39.648209, lng: -75.711185 }}
+                initialCenter = {{ lat: 40.7359, lng: -73.9911 }}
             >
+
                 <Marker
                     onClick = { this.onMarkerClick }
-                    title = { 'Changing Colors Garage' }
-                    position = {{ lat: 39.648209, lng: -75.711185 }}
-                    name = { 'Changing Colors Garage' }
+                    title = { 'The Dutch' }
+                    position = {{ lat: 40.7265328, lng: -74.0043476 }}
+                    name = { 'The Dutch' }
                 />
                 <InfoWindow
                     marker = { this.state.activeMarker }
                     visible = { this.state.showingInfoWindow }
                 >
-                
-                <Paper>
-                    <Typography
-                    variant = 'headline'
-                    component = 'h4'
-                    >
-                    Changing Colors Garage
-                    </Typography>
-                    <Typography
-                    component = 'p'
-                    >
-                    98G Albe Dr Newark, DE 19702 <br />
-                    302-293-8627
-                    </Typography>
-                </Paper>
+                    <div>
+                        <b>{this.state.selectedPlace.name}</b>
+                    </div>
                 </InfoWindow>
+
                 <Marker
                     onClick = { this.onMarkerClick }
-                    title = { 'Changing Colors Garage' }
-                    position = {{ lat: 39.649409, lng: -75.713485 }}
-                    name = { 'Changing Colors Garage' }
+                    title = { 'Spicy Village' }
+                    position = {{ lat: 40.716974, lng: -73.995449 }}
+                    name = { 'Spicy Village' }
                 />
                 <InfoWindow
                     marker = { this.state.activeMarker }
                     visible = { this.state.showingInfoWindow }
                 >
-                
-                <Paper>
-                    <Typography
-                    variant = 'headline'
-                    component = 'h4'
-                    >
-                    Changing Colors Garage
-                    </Typography>
-                    <Typography
-                    component = 'p'
-                    >
-                    98G Albe Dr Newark, DE 19702 <br />
-                    302-293-8627
-                    </Typography>
-                </Paper>
+                    <div>
+                        <b>{this.state.selectedPlace.name}</b>
+                    </div>
                 </InfoWindow>
+
+                
             </Map>
         );
     }
