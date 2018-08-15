@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Sidebar from "react-sidebar";
+import React, { Component } from 'react'
+import Sidebar from "react-sidebar"
 import GoogleMap from './components/GoogleMapsContainer'
 import Search from './components/Search'
 import './App.css'
@@ -7,26 +7,55 @@ import './App.css'
 const mql = window.matchMedia(`(min-width: 800px)`)
 class App extends Component {
     state = {
-        // isMobile: false,
-        // mapDimensions: {}
         sidebarDocked: mql.matches,
-        sidebarOpen: false
+        sidebarOpen: false,
+        defaultResNames: [
+            'The Dutch',
+            'Spicy Village',
+            'Ilily',
+            'Upland',
+            'Flaming Kitchen',
+            'Egg Shop',
+            'Taiwan Pork Chop House',
+            'Baekjeong',
+            'The Vine'
+        ],
+        restaurants: []
     }
+
+    componentDidMount() {
+        // Fetch restaurants' info from Foursuqare.
+        const restaurants = []
+        this.state.defaultResNames.forEach(name => {
+            const query = this.convertStringToQuery(name)
+            fetch(this.getRequestString(query)).then(res => {
+                if (res.ok) {
+                    return res.json()
+                } else {
+                    throw Error (res.statusText)
+                }
+            }).then(dt => restaurants.push(dt.response.venues[0])).then(this.setState({restaurants: restaurants}))
+        })
+    }
+
+    convertStringToQuery = (str) => encodeURIComponent(str.trim())
+
+    getRequestString = (str) => `https://api.foursquare.com/v2/venues/search?near=Manhattan,NY&categoryId=4d4b7105d754a06374d81259&query=${str}&client_id=LRYG3OLF2LZTRVK3JFNX22XED5SGGA1P32BIHPG5RYGXMLDO&client_secret=GKJMX3KNN1V5W3SLTB1QPVWQXCNG533GKAXJ1VK0ATWI5SIL&v=20180814`
 
     componentWillMount() {
         mql.addListener(this.mediaQueryChanged)
     }
     
     componentWillUnmount() {
-    this.state.mql.removeListener(this.mediaQueryChanged)
+        this.state.mql.removeListener(this.mediaQueryChanged)
     }
     
     onSetSidebarOpen = (open) => {
-    this.setState({ sidebarOpen: open })
+        this.setState({ sidebarOpen: open })
     }
     
     mediaQueryChanged = () => {
-    this.setState({ sidebarDocked: mql.matches, sidebarOpen: false })
+        this.setState({ sidebarDocked: mql.matches, sidebarOpen: false })
     }
 
     // componentDidMount(){
@@ -68,6 +97,7 @@ class App extends Component {
 
 
     render() {
+        console.log(this.state.restaurants)
         // const sidebarStyle = {
         //     root: {
         //         position: "absolute",
@@ -138,8 +168,8 @@ class App extends Component {
                 </header>
                 {/* <GoogleMap /> */}
                 <main id='main' style={mapStyle} >
-                    <GoogleMap />
-                    <Search />
+                    <GoogleMap restaurants={this.state.restaurants.filter(r => r !== undefined)} />
+                    <Search restaurants={this.state.restaurants.filter(r => r !== undefined)} />
                 </main>
             </Sidebar>
 

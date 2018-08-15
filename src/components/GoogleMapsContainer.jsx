@@ -53,6 +53,7 @@ class GoogleMapsContainer extends React.Component {
         //     width: isMobile ? '100%' : `${this.props.mapDimensions.width * 2 / 3}px`,
         //     height: isMobile? '50%' : `${this.props.mapDimensions.height - headerHeight - footerHeight}`
         // }
+        console.log(this.props.restaurants)
         const style = {
             width: '100%',
             height: '100%'
@@ -68,8 +69,28 @@ class GoogleMapsContainer extends React.Component {
                 zoom = { 14 }
                 initialCenter = {{ lat: 40.7359, lng: -73.9911 }}
             >
+                { this.props.restaurants.map(r => 
+                    <Marker key={r.id}
+                    onClick = { this.onMarkerClick }
+                    title = { r.name }
+                    address = {r.location.formattedAddress[0] + r.location.formattedAddress[1]}
+                    position = {{ lat: r.location.lat, lng: r.location.lng }}
+                    name = { r.name }
+                    />
+                )}
+                
+                <InfoWindow
+                    marker = { this.state.activeMarker }
+                    visible = { this.state.showingInfoWindow }
+                >
+                    <div>
+                        <b>{this.state.selectedPlace.name}</b>
+                        <h4>{this.state.selectedPlace.address}</h4>
+                    </div>
+                </InfoWindow>
+                
 
-                <Marker
+                {/* <Marker
                     onClick = { this.onMarkerClick }
                     title = { 'The Dutch' }
                     position = {{ lat: 40.7265328, lng: -74.0043476 }}
@@ -97,7 +118,7 @@ class GoogleMapsContainer extends React.Component {
                     <div>
                         <b>{this.state.selectedPlace.name}</b>
                     </div>
-                </InfoWindow>
+                </InfoWindow> */}
 
                 
             </Map>

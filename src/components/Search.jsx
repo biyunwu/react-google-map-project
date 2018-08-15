@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 
 export default class Search extends Component {
+
     render() {
+        // console.log(this.props.restaurants)
+        // const list = this.props.restaurants && this.props.restaurants.map(restaurant => <li key={restaurant.id}>{restaurant.name}</li>)
+        // console.log(list);
+        
         return (
             <div style={{width: 256, height: '100%'}} >
                 <div id='sidebar'>
@@ -12,12 +17,12 @@ export default class Search extends Component {
                         <button>Search</button>
                     </div>
                     <ul>
-                        <li>The Dutch</li>
-                        <li>Spicy Village</li>
-                        <li>Flaming Kitchen</li>
-                        <li>Egg Shop</li>
-                        <li>Wuchang</li>
+                        {/* { this.props.restaurants.map(restaurant => 
+                            <li key={restaurant.id}>{restaurant.name}</li>
+                        )} */}
+                        {/* {list} */}
                     </ul>
+                    <img src='https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png' alt='restaurant icon'/>
                 </div>
             </div>
         )
