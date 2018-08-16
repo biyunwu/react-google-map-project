@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import * as Data from './Data'
 import Sidebar from "react-sidebar"
 import GoogleMap from './components/GoogleMapsContainer'
 import Search from './components/Search'
@@ -9,34 +10,23 @@ class App extends Component {
     state = {
         sidebarDocked: mql.matches,
         sidebarOpen: false,
-        defaultResNames: [
-            'The Dutch',
-            'Spicy Village',
-            'Ilily',
-            'Upland',
-            'Flaming Kitchen',
-            'Egg Shop',
-            'Taiwan Pork Chop House',
-            'Baekjeong',
-            'The Vine'
-        ],
-        restaurants: []
+        restaurants: Data.getData()
     }
 
-    componentDidMount() {
-        // Fetch restaurants' info from Foursuqare.
-        const restaurants = []
-        this.state.defaultResNames.forEach(name => {
-            const query = this.convertStringToQuery(name)
-            fetch(this.getRequestString(query)).then(res => {
-                if (res.ok) {
-                    return res.json()
-                } else {
-                    throw Error (res.statusText)
-                }
-            }).then(dt => restaurants.push(dt.response.venues[0])).then(this.setState({restaurants: restaurants}))
-        })
-    }
+    // componentDidMount() {
+    //     // Fetch restaurants' info from Foursuqare.
+    //     const restaurants = []
+    //     this.state.defaultResNames.forEach(name => {
+    //         const query = this.convertStringToQuery(name)
+    //         fetch(this.getRequestString(query)).then(res => {
+    //             if (res.ok) {
+    //                 return res.json()
+    //             } else {
+    //                 throw Error (res.statusText)
+    //             }
+    //         }).then(dt => restaurants.push(dt.response.venues[0])).then(this.setState({restaurants: restaurants}))
+    //     })
+    // }
 
     convertStringToQuery = (str) => encodeURIComponent(str.trim())
 
@@ -168,8 +158,8 @@ class App extends Component {
                 </header>
                 {/* <GoogleMap /> */}
                 <main id='main' style={mapStyle} >
-                    <GoogleMap restaurants={this.state.restaurants.filter(r => r !== undefined)} />
-                    <Search restaurants={this.state.restaurants.filter(r => r !== undefined)} />
+                    {/* <GoogleMap restaurants={this.state.restaurants.filter(r => r !== undefined)} />
+                    <Search restaurants={this.state.restaurants.filter(r => r !== undefined)} /> */}
                 </main>
             </Sidebar>
 
