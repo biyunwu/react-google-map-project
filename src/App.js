@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 import * as Data from './Data'
 import Sidebar from "react-sidebar"
+import Header from './components/Header'
 import GoogleMap from './components/GoogleMapsContainer'
 import Search from './components/Search'
 import './App.css'
-
-const mql = window.matchMedia(`(min-width: 800px)`)
 class App extends Component {
     state = {
-        sidebarDocked: mql.matches,
         sidebarOpen: false,
+        mapHeight: 500,
         restaurants: Data.getData()
     }
 
@@ -31,29 +30,17 @@ class App extends Component {
     convertStringToQuery = (str) => encodeURIComponent(str.trim())
 
     getRequestString = (str) => `https://api.foursquare.com/v2/venues/search?near=Manhattan,NY&categoryId=4d4b7105d754a06374d81259&query=${str}&client_id=LRYG3OLF2LZTRVK3JFNX22XED5SGGA1P32BIHPG5RYGXMLDO&client_secret=GKJMX3KNN1V5W3SLTB1QPVWQXCNG533GKAXJ1VK0ATWI5SIL&v=20180814`
-
-    componentWillMount() {
-        mql.addListener(this.mediaQueryChanged)
-    }
-    
-    componentWillUnmount() {
-        this.state.mql.removeListener(this.mediaQueryChanged)
-    }
     
     onSetSidebarOpen = (open) => {
         this.setState({ sidebarOpen: open })
     }
-    
-    mediaQueryChanged = () => {
-        this.setState({ sidebarDocked: mql.matches, sidebarOpen: false })
-    }
 
-    // componentDidMount(){
-    //     this.checkViewport()
-    //     window.onresize = this.checkViewport
-        
-    //     // Google Palces API
-    // }
+    componentDidMount(){
+        // this.checkViewport()
+        // window.onresize = this.checkViewport
+        this.getMapDimensions()
+        window.addEventListener('resize', this.getMapDimensions())
+    }
 
     // checkViewport = () => {
     //     const isMobile = window.matchMedia("only screen and (max-width: 760px)").matches
@@ -78,16 +65,16 @@ class App extends Component {
     //     this.getMapDimensions();
     // }
 
-    // getMapDimensions = () => {
-    //     const w = Math.max(document.getElementById('header').clientWidth || 0);
-    //     const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    //     this.setState({mapDimensions: {width: w, height: h}})
-    //     // console.log(w, h)
-    // }
-
+    getMapDimensions = () => {
+        const headerHeight = Math.max(document.getElementById('header').clientHeight || 0);
+        const viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        this.setState({mapHeight: viewportHeight-headerHeight})
+        console.log(headerHeight, viewportHeight)
+    }
+        
 
     render() {
-        console.log(this.state.restaurants)
+        // console.log(this.state.mapHeight);
         // const sidebarStyle = {
         //     root: {
         //         position: "absolute",
@@ -140,26 +127,23 @@ class App extends Component {
         const mapStyle = {
             position: 'absolute',
             width: '100%',
-            height: '94.5%'
+            height: '100%'
         }
 
         return (
             <Sidebar
-                sidebar={<Search />}
+                sidebar={<Search restaurants={this.state.restaurants}/>}
                 open={this.state.sidebarOpen}
                 docked={this.state.sidebarDocked}
                 onSetOpen={this.onSetSidebarOpen}
                 // styles={sidebarStyle}
             >
-                <header id='header'>
-                    <div className='title'>
-                        <h1>Favourite Restaurants in NYC</h1>
-                    </div>
-                </header>
-                {/* <GoogleMap /> */}
+                <Header onSetSidebarOpen={this.onSetSidebarOpen}/>
                 <main id='main' style={mapStyle} >
-                    {/* <GoogleMap restaurants={this.state.restaurants.filter(r => r !== undefined)} />
-                    <Search restaurants={this.state.restaurants.filter(r => r !== undefined)} /> */}
+                    <GoogleMap
+                        mapHeight={this.state.mapHeight}
+                        restaurants={this.state.restaurants}
+                    />
                 </main>
             </Sidebar>
 

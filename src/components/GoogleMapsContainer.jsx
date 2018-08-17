@@ -53,10 +53,10 @@ class GoogleMapsContainer extends React.Component {
         //     width: isMobile ? '100%' : `${this.props.mapDimensions.width * 2 / 3}px`,
         //     height: isMobile? '50%' : `${this.props.mapDimensions.height - headerHeight - footerHeight}`
         // }
-        console.log(this.props.restaurants)
+        // console.log(this.props.restaurants)
         const style = {
             width: '100%',
-            height: '100%'
+            height: `${this.props.mapHeight}px`
         }
 
         return (
@@ -66,7 +66,7 @@ class GoogleMapsContainer extends React.Component {
                 style = { style }
                 google = { this.props.google }
                 onClick = { this.onMapClick }
-                zoom = { 14 }
+                zoom = { 13 }
                 initialCenter = {{ lat: 40.7359, lng: -73.9911 }}
             >
                 { this.props.restaurants.map(r => 

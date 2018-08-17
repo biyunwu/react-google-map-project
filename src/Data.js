@@ -16,7 +16,7 @@ export const getData = () => [
     },
     {
         "id": "4db3374590a0843f295fb69b",
-        "name": "Spicy Village 大福星 (Spicy Village)",
+        "name": "Spicy Village",
         "location": {
             "address": "68B Forsyth St",
             "crossStreet": "btwn Grand & Hester",
@@ -46,7 +46,7 @@ export const getData = () => [
     },
     {
         "id": "547d03e3498eb32c879589da",
-        "name": "Baekjeong NYC (Kang Ho Dong Baekjeong)",
+        "name": "Kang Ho Dong Baekjeong",
         "location": {
             "address": "1 E 32nd St",
             "crossStreet": "at 5th Ave",
@@ -76,7 +76,7 @@ export const getData = () => [
     },
     {
         "id": "53a76f8b498e34ef9a638548",
-        "name": "Flaming Kitchen 蜀客",
+        "name": "Flaming Kitchen",
         "location": {
             "address": "97 Bowery",
             "crossStreet": "at Hester",
