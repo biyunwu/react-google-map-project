@@ -4,11 +4,11 @@ import Sidebar from "react-sidebar"
 import Header from './components/Header'
 import GoogleMap from './components/GoogleMapsContainer'
 import Search from './components/Search'
+import Footer from './components/Footer'
 import './App.css'
 class App extends Component {
     state = {
         sidebarOpen: false,
-        mapHeight: 500,
         restaurants: Data.getData()
     }
 
@@ -27,19 +27,10 @@ class App extends Component {
     //     })
     // }
 
-    convertStringToQuery = (str) => encodeURIComponent(str.trim())
-
-    getRequestString = (str) => `https://api.foursquare.com/v2/venues/search?near=Manhattan,NY&categoryId=4d4b7105d754a06374d81259&query=${str}&client_id=LRYG3OLF2LZTRVK3JFNX22XED5SGGA1P32BIHPG5RYGXMLDO&client_secret=GKJMX3KNN1V5W3SLTB1QPVWQXCNG533GKAXJ1VK0ATWI5SIL&v=20180814`
+    // getRequestString = (id) => `https://api.foursquare.com/v2/venues/${id}&client_id=LRYG3OLF2LZTRVK3JFNX22XED5SGGA1P32BIHPG5RYGXMLDO&client_secret=GKJMX3KNN1V5W3SLTB1QPVWQXCNG533GKAXJ1VK0ATWI5SIL&v=20180814`
     
     onSetSidebarOpen = (open) => {
         this.setState({ sidebarOpen: open })
-    }
-
-    componentDidMount(){
-        // this.checkViewport()
-        // window.onresize = this.checkViewport
-        this.getMapDimensions()
-        window.addEventListener('resize', this.getMapDimensions())
     }
 
     // checkViewport = () => {
@@ -65,67 +56,11 @@ class App extends Component {
     //     this.getMapDimensions();
     // }
 
-    getMapDimensions = () => {
-        const headerHeight = Math.max(document.getElementById('header').clientHeight || 0);
-        const viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-        this.setState({mapHeight: viewportHeight-headerHeight})
-        console.log(headerHeight, viewportHeight)
-    }
         
 
     render() {
-        // console.log(this.state.mapHeight);
-        // const sidebarStyle = {
-        //     root: {
-        //         position: "absolute",
-        //         top: 0,
-        //         left: 0,
-        //         right: 0,
-        //         bottom: 0,
-        //         overflow: "hidden"
-        //     },
-        //     sidebar: {
-        //         zIndex: 2,
-        //         position: "absolute",
-        //         top: 0,
-        //         bottom: 0,
-        //         transition: "transform .3s ease-out",
-        //         WebkitTransition: "-webkit-transform .3s ease-out",
-        //         willChange: "transform",
-        //         overflowY: "auto"
-        //     },
-        //     content: {
-        //         position: "absolute",
-        //         top: 0,
-        //         left: 0,
-        //         right: 0,
-        //         bottom: 0,
-        //         overflowY: "auto",
-        //         WebkitOverflowScrolling: "touch",
-        //         transition: "left .3s ease-out, right .3s ease-out"
-        //     },
-        //     overlay: {
-        //         zIndex: 1,
-        //         position: "fixed",
-        //         top: 0,
-        //         left: 0,
-        //         right: 0,
-        //         bottom: 0,
-        //         opacity: 0,
-        //         visibility: "hidden",
-        //         transition: "opacity .3s ease-out, visibility .3s ease-out",
-        //         backgroundColor: "rgba(0,0,0,.3)"
-        //     },
-        //     dragHandle: {
-        //         zIndex: 1,
-        //         position: "fixed",
-        //         top: 0,
-        //         bottom: 0
-        //     }
-        // }
-
         const mapStyle = {
-            position: 'absolute',
+            position: 'fixed',
             width: '100%',
             height: '100%'
         }
@@ -136,7 +71,6 @@ class App extends Component {
                 open={this.state.sidebarOpen}
                 docked={this.state.sidebarDocked}
                 onSetOpen={this.onSetSidebarOpen}
-                // styles={sidebarStyle}
             >
                 <Header onSetSidebarOpen={this.onSetSidebarOpen}/>
                 <main id='main' style={mapStyle} >
@@ -145,17 +79,8 @@ class App extends Component {
                         restaurants={this.state.restaurants}
                     />
                 </main>
+                <Footer />
             </Sidebar>
-
-
-            // <div id='mainContainer' style={style} >
-            //     <header id='header'><h1>My Favourite Restaurants in NYC</h1></header>
-            //     <main id='main' style={style} >
-            //         <GoogleMap />
-            //         <Search />
-            //     </main>
-            //     <footer id='footer'><p>Developed by Biyun Wu</p></footer>
-            // </div>
         )
     }
 }

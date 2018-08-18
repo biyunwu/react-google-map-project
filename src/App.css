@@ -12,16 +12,6 @@ html, body {
   /* padding: 0; */
 }
 
-
-footer {
-  text-align: center;
-  position: relative;
-  /* width: 100vw; */
-}
-footer p {
-  display: block;
-}
-
 #sidebarcontent {
   margin: 0 auto;
   text-align: center;
@@ -62,16 +52,16 @@ li:hover {
 
 h1 {
   margin: 0;
-  padding: 1em auto;
+  padding: 0;
 }
 
 .title {
-  padding: 1em 0;
+  padding: 0.5em 0;
   background-color: gold;
 }
 
 #menubar {
-  max-height: 30px;
+  max-height: 29px;
   margin: 0 0.5em;
 }
 
@@ -84,3 +74,22 @@ h1 {
   border: 0;
 }
 
+.dollarsign {
+  color: red;
+}
+
+footer {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 0;
+  background-color: gold;
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
+  line-height: 25px;
+  font-size: 75%;
+}

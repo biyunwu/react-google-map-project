@@ -21,6 +21,9 @@ export default class Search extends Component {
                         )}
                     </ul>
                     <img src='https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png' alt='restaurant icon'/>
+                    <footer>
+                        <p>Powered by Google Map and Foursquare</p>
+                    </footer>
                 </div>
             </div>
         )

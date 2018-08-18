@@ -1,16 +1,28 @@
 import React from 'react';
 import { GoogleApiWrapper, InfoWindow, Map, Marker } from 'google-maps-react';
+import { unwatchFile } from 'fs';
 
 class GoogleMapsContainer extends React.Component {
     state = {
         showingInfoWindow: false,
         activeMarker: {},
         selectedPlace: {},
-        // mapDimension: {}
-        // height: 0,
-        // width: 0
+        mapHeight: 0,
+        currVenue: null
     }
 
+    componentDidMount(){
+        this.getMapDimensions()
+        // Make the Google map responsive.
+        window.addEventListener('resize', this.getMapDimensions)
+    }
+
+    getMapDimensions = () => {
+        const headerHeight = Math.max(document.getElementById('header').clientHeight || 0)
+        const footerHeight = Math.max(document.getElementById('footer').clientHeight || 0)
+        const viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+        this.setState({mapHeight: viewportHeight-headerHeight-footerHeight})
+    }
 
     onMarkerClick = (props, marker, e) => {
         this.setState({
@@ -18,45 +30,53 @@ class GoogleMapsContainer extends React.Component {
             activeMarker: marker,
             showingInfoWindow: true
         })
+        console.log('props, props.id', props, props.id)
+        fetch(this.getRequestString(props.id))
+            .then(this.checkResponse)
+            .then(dt => this.setState({currVenue: dt && dt.response? dt.response.venue : null}))
     }
+
+    checkResponse = (res) => {
+        if (res.ok) {
+            return res.json()
+        } else {
+            // alert('No response from server!')
+            document.getElementById('footertext').innerText = 'Only basic info is available due to the daily request limitation of Foursqaure API.'
+            document.getElementById('footer').style.backgroundColor = 'red'
+        }
+    }
+
     onMapClick = (props) => {
         if (this.state.showingInfoWindow) {
             this.setState({
                 showingInfoWindow: false,
                 activeMarker: null
-            });
+            })
         }
     }
 
-    // componentWillMount(){
-    //     this.getMapDimensions();
-    // }
-
-    // componentDidMount(){
-    //     // window.onresize = this.getMapDimensions
-    //     this.setState({height: this.props.mapDimensions.height, width: this.props.mapDimensions.width})
-    // }
-
-    // getMapDimensions = () => {
-    //     const w = Math.max(document.getElementById('header').clientWidth || 0);
-    //     const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    //     this.setState({mapDimension: {width: w, height: h}})
-    //     console.log(w, h)
-    // }
-    // getElementHeight = (elementId) => Math.max(document.getElementById(elementId).clientHeight)
+    getRequestString = (id) => `https://api.foursquare.com/v2/venues/${id}?&client_id=LRYG3OLF2LZTRVK3JFNX22XED5SGGA1P32BIHPG5RYGXMLDO&client_secret=GKJMX3KNN1V5W3SLTB1QPVWQXCNG533GKAXJ1VK0ATWI5SIL&v=20180323&limit=1`
 
     render() {
-        // const headerHeight = this.getElementHeight('header'), footerHeight = this.getElementHeight('footer')
-        // // console.log(this.props.isMobile)
-        // const isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
-        // const style = {
-        //     width: isMobile ? '100%' : `${this.props.mapDimensions.width * 2 / 3}px`,
-        //     height: isMobile? '50%' : `${this.props.mapDimensions.height - headerHeight - footerHeight}`
-        // }
-        // console.log(this.props.restaurants)
+        const currVenue = this.state.currVenue
+        const selectedPlace = this.state.selectedPlace
+        const venueInfo = {}
+        if (currVenue && selectedPlace && selectedPlace.id === currVenue.id) {
+            venueInfo.url = currVenue.url ? currVenue.url : 0
+            venueInfo.price = currVenue.attributes.groups[0].summary.includes('$')
+                                ? currVenue.attributes.groups[0].summary : 0
+            venueInfo.rating = currVenue.rating? currVenue.rating : 0
+            venueInfo.phone = currVenue.contact.formattedPhone || 0
+            venueInfo.category = currVenue.categories[0].shortName || 0
+            venueInfo.delivery = currVenue.delivery && currVenue.delivery.url
+                                    ? currVenue.delivery.url
+                                    : 0
+        }
+        console.log('currInfo', venueInfo);
+
         const style = {
             width: '100%',
-            height: `${this.props.mapHeight}px`
+            height: `${this.state.mapHeight}px`
         }
 
         return (
@@ -70,10 +90,12 @@ class GoogleMapsContainer extends React.Component {
                 initialCenter = {{ lat: 40.7359, lng: -73.9911 }}
             >
                 { this.props.restaurants.map(r => 
-                    <Marker key={r.id}
+                    <Marker 
+                    key={r.id}
+                    id={r.id}
                     onClick = { this.onMarkerClick }
                     title = { r.name }
-                    address = {r.location.formattedAddress[0] + r.location.formattedAddress[1]}
+                    address = {r.location.formattedAddress.join(', ')}
                     position = {{ lat: r.location.lat, lng: r.location.lng }}
                     name = { r.name }
                     />
@@ -84,45 +106,18 @@ class GoogleMapsContainer extends React.Component {
                     visible = { this.state.showingInfoWindow }
                 >
                     <div>
-                        <b>{this.state.selectedPlace.name}</b>
-                        <h4>{this.state.selectedPlace.address}</h4>
+                        <p>
+                            <b><a href={venueInfo.url}>{this.state.selectedPlace.name}</a></b>
+                            <span class='dollarsign'>{venueInfo.price}</span>
+                        </p>
+                        <p>{this.state.selectedPlace.address}</p>
+                        {venueInfo.category && <p>Style: {venueInfo.category}</p>}
+                        {venueInfo.delivery && <p><a href={venueInfo.delivery}>Delivery Available</a></p>}
+                        <p>{venueInfo.phone && {Contact: venueInfo.phone}}</p>
                     </div>
                 </InfoWindow>
-                
-
-                {/* <Marker
-                    onClick = { this.onMarkerClick }
-                    title = { 'The Dutch' }
-                    position = {{ lat: 40.7265328, lng: -74.0043476 }}
-                    name = { 'The Dutch' }
-                />
-                <InfoWindow
-                    marker = { this.state.activeMarker }
-                    visible = { this.state.showingInfoWindow }
-                >
-                    <div>
-                        <b>{this.state.selectedPlace.name}</b>
-                    </div>
-                </InfoWindow>
-
-                <Marker
-                    onClick = { this.onMarkerClick }
-                    title = { 'Spicy Village' }
-                    position = {{ lat: 40.716974, lng: -73.995449 }}
-                    name = { 'Spicy Village' }
-                />
-                <InfoWindow
-                    marker = { this.state.activeMarker }
-                    visible = { this.state.showingInfoWindow }
-                >
-                    <div>
-                        <b>{this.state.selectedPlace.name}</b>
-                    </div>
-                </InfoWindow> */}
-
-                
             </Map>
-        );
+        )
     }
 }
 export default GoogleApiWrapper({
