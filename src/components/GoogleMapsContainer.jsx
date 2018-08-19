@@ -1,12 +1,13 @@
 import React from 'react';
 import { GoogleApiWrapper, InfoWindow, Map, Marker } from 'google-maps-react';
-import { unwatchFile } from 'fs';
+// import { unwatchFile } from 'fs';
 
 class GoogleMapsContainer extends React.Component {
     state = {
         showingInfoWindow: false,
         activeMarker: {},
         selectedPlace: {},
+        mapWidth: 0,
         mapHeight: 0,
         currVenue: null
     }
@@ -21,6 +22,11 @@ class GoogleMapsContainer extends React.Component {
         const headerHeight = Math.max(document.getElementById('header').clientHeight || 0)
         const footerHeight = Math.max(document.getElementById('footer').clientHeight || 0)
         const viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+        if (this.props.sidebarDocked) {
+            const sidebarWidth = Math.max(document.getElementById('sidebar').clientWidth || 0)
+            const viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+            this.setState({mapWidth: viewportWidth-sidebarWidth, mapHeight: viewportHeight-headerHeight-footerHeight})
+        }
         this.setState({mapHeight: viewportHeight-headerHeight-footerHeight})
     }
 
@@ -31,6 +37,8 @@ class GoogleMapsContainer extends React.Component {
             showingInfoWindow: true
         })
         // console.log('props, props.id', props, props.id)
+        // Transfer clicked marker's id to the parent component
+        this.props.setCurrMarkerId(props.id)
         fetch(this.getRequestString(props.id))
             .then(this.checkResponse)
             .then(dt => dt && dt.response && dt.response.venue ? dt.response.venue : null)
@@ -39,9 +47,12 @@ class GoogleMapsContainer extends React.Component {
 
     checkResponse = (res) => {
         if (res.ok) {
+            if(document.getElementById('footer').style.backgroundColor === 'red'){
+                document.getElementById('footertext').innerHTML = `<p id='footertext'>Developed with appetite by <a href='https://biyunwu.com'>Biyun Wu</a>.</p>`
+                document.getElementById('footer').style.backgroundColor = 'gold'
+            }
             return res.json()
         } else {
-            // alert('No response from server!')
             document.getElementById('footertext').innerText = 'Only basic info is available due to the daily request limitation of Foursqaure API.'
             document.getElementById('footer').style.backgroundColor = 'red'
             return 0
@@ -74,10 +85,9 @@ class GoogleMapsContainer extends React.Component {
                                     ? currVenue.delivery.url
                                     : undefined
         }
-        console.log('currInfo', venueInfo);
 
         const style = {
-            width: '100%',
+            width: this.props.sidebarDocked ? `${this.state.mapWidth}px` : '100%',
             height: `${this.state.mapHeight}px`
         }
 
@@ -110,9 +120,10 @@ class GoogleMapsContainer extends React.Component {
                     <div>
                         <p>
                             <b><a href={venueInfo.url}>{this.state.selectedPlace.name}</a></b>
-                            <span class='dollarsign'>{venueInfo.price}</span>
+                            <span className='dollarsign'>{venueInfo.price}</span>
                         </p>
                         {venueInfo.category && <p>Style: {venueInfo.category}</p>}
+                        {venueInfo.rating && <p>Rating: {venueInfo.rating}</p>}
                         {venueInfo.delivery && <p><a href={venueInfo.delivery}>Delivery Available</a></p>}
                         {venueInfo.phone && <p>{venueInfo.phone}</p>}
                         <p>{this.state.selectedPlace.address}</p>

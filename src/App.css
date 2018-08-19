@@ -39,14 +39,15 @@ li {
   list-style: none;
   text-align: left;
   padding: 1em;
-  border-bottom: 1px solid gold;
+  border-bottom: 1px solid rgba(255,215,0,0.5);
   color: grey;
   text-align: center;
 }
 
 li:hover {
   color: black;
-  background: gold;
+  background: rgba(255,215,0,0.5);
+  opacity: 50%;
   cursor: pointer;
 }
 
@@ -65,6 +66,15 @@ h1 {
   margin: 0 0.5em;
 }
 
+.title button {
+  border-left: 1px solid red;
+}
+
+.title button:hover {
+  cursor: pointer;
+  border-left: 1px solid black;
+}
+
 #sidebar {
   background-color: white;
 }
@@ -72,6 +82,10 @@ h1 {
 .title button {
   background: none;
   border: 0;
+}
+
+li.clicked {
+  background: gold;
 }
 
 .dollarsign {

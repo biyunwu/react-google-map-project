@@ -17,7 +17,7 @@ export default class Search extends Component {
                     </div>
                     <ul>
                         { restaurants && restaurants.map(restaurant => 
-                            <li key={restaurant.id}>{restaurant.name}</li>
+                            <li key={restaurant.id} className={restaurant.id === this.props.currMarkerId? 'clicked' : undefined}>{restaurant.name}</li>
                         )}
                     </ul>
                     <img src='https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png' alt='restaurant icon'/>
