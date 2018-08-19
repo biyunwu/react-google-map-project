@@ -9,13 +9,30 @@ class GoogleMapsContainer extends React.Component {
         selectedPlace: {},
         mapWidth: 0,
         mapHeight: 0,
-        currVenue: null
+        currVenue: null,
+        // allMarkers: []
     }
+
+    // allMarkers = []
 
     componentDidMount(){
         this.getMapDimensions()
         // Make the Google map responsive.
         window.addEventListener('resize', this.getMapDimensions)
+        document.querySelectorAll('li').forEach(element => element.addEventListener('click', this.handleListClick))
+    }
+
+    handleListClick = (e) => {
+        let listId = e.target.id
+        // In Search.jsx, lists' ids have extra 'li' characters in order to differentiate them from Markers' ids, 
+        listId = listId.substring(0, listId.length-2)
+        console.log(listId)
+        // this.allMarkers.reverse().forEach(marker => {
+        //     if (marker.props.id === listId) {
+        //         marker.props.onClick()
+        //     }
+        // })
+        console.log(document.getElementById(listId))
     }
 
     getMapDimensions = () => {
@@ -91,6 +108,8 @@ class GoogleMapsContainer extends React.Component {
             height: `${this.state.mapHeight}px`
         }
 
+        console.log(this.state)
+
         return (
             <Map
                 item
@@ -103,11 +122,12 @@ class GoogleMapsContainer extends React.Component {
             >
                 { this.props.restaurants.map(r => 
                     <Marker 
-                    key={r.id}
-                    id={r.id}
+                    key={ r.id }
+                    id={ r.id }
+                    // ref={ele => this.allMarkers = ele}
                     onClick = { this.onMarkerClick }
                     title = { r.name }
-                    address = {r.location.formattedAddress[0]}
+                    address = { r.location.formattedAddress[0] }
                     position = {{ lat: r.location.lat, lng: r.location.lng }}
                     name = { r.name }
                     />
