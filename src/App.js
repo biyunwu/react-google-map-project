@@ -81,6 +81,7 @@ class App extends Component {
                 />
                 <main id='main' style={mapStyle} >
                     <GoogleMap
+                        sidebarDocked={this.state.sidebarDocked}
                         restaurants={this.state.restaurants}
                         currSelectedListId={this.state.currSelectedListId}
                         setCurrMarkerId={this.setCurrMarkerId}

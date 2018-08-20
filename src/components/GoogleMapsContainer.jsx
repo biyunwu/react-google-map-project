@@ -26,8 +26,9 @@ class GoogleMapsContainer extends React.Component {
             const sidebarWidth = Math.max(document.getElementById('sidebar').clientWidth || 0)
             const viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
             this.setState({mapWidth: viewportWidth-sidebarWidth, mapHeight: viewportHeight-headerHeight-footerHeight})
+        } else {
+            this.setState({mapHeight: viewportHeight-headerHeight-footerHeight})
         }
-        this.setState({mapHeight: viewportHeight-headerHeight-footerHeight})
     }
 
     onMarkerClick = (props, marker, e) => {
