@@ -151,3 +151,7 @@ button:focus, button:active{
 ul:first-child {
   border-top: 1px solid rgba(255,215,0,0.5);
 }
+
+#git-icon {
+  margin-bottom: 2em;
+}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import GitHubIcon from '../GitHub.png'
 
 export default class Search extends Component {
 
@@ -34,7 +35,8 @@ export default class Search extends Component {
                             </li>
                         )}
                     </ul>
-                    <img src='https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png' alt='restaurant icon'/>
+                    {/* <img src='https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png' alt='restaurant icon'/> */}
+                    <img id='git-icon' src={GitHubIcon} alt="GitHub icon which is also a link to the repository of this project"/>
                 </div>
                 <footer>
                         <p>Powered by Google Map and Foursquare</p>

@@ -96,7 +96,7 @@ class GoogleMapsContainer extends React.Component {
                 google = { this.props.google }
                 onClick = { this.onMapClick }
                 zoom = { 13 }
-                initialCenter = {{ lat: 40.7359, lng: -73.9911 }}
+                initialCenter = {{ lat: 40.7359, lng: -73.9951 }}
             >
                 { this.props.restaurants.map(r =>
                     <Marker 
