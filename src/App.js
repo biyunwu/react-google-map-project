@@ -18,6 +18,10 @@ class App extends Component {
         currSelectedListId: null
     }
 
+    componentDidMount(){
+        window.addEventListener('click', e => console.log(e.target))
+    }
+
     componentWillMount() {
         mql.addListener(this.mediaQueryChanged);
     }
