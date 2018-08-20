@@ -66,6 +66,8 @@ class GoogleMapsContainer extends React.Component {
                 activeMarker: null
             })
         }
+        this.props.updateSelectedListId(null)
+        this.props.setCurrMarkerId(null)
     }
 
     getRequestString = (id) => `https://api.foursquare.com/v2/venues/${id}?&client_id=LRYG3OLF2LZTRVK3JFNX22XED5SGGA1P32BIHPG5RYGXMLDO&client_secret=GKJMX3KNN1V5W3SLTB1QPVWQXCNG533GKAXJ1VK0ATWI5SIL&v=20180817&limit=1`

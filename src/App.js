@@ -85,6 +85,7 @@ class App extends Component {
                         restaurants={this.state.restaurants}
                         currSelectedListId={this.state.currSelectedListId}
                         setCurrMarkerId={this.setCurrMarkerId}
+                        updateSelectedListId={this.updateSelectedListId}
                     />
                 </main>
                 <Footer />
