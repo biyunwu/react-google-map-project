@@ -27,10 +27,6 @@ html, body {
   text-align: center;
 }
 
-/* #search input {
-  margin: 0 auto;
-} */
-
 ul {
   padding: 0 0;
 }
@@ -154,4 +150,9 @@ ul:first-child {
 
 #git-icon {
   margin-bottom: 2em;
+}
+
+/* Hide scoll-bar for better presentation */
+::-webkit-scrollbar { 
+  display: none; 
 }
