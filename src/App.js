@@ -75,12 +75,13 @@ class App extends Component {
                 docked={this.state.sidebarDocked}
                 onSetOpen={this.onSetSidebarOpen}
             >
-                <Header onSetSidebarOpen={this.onSetSidebarOpen}/>
+                <Header 
+                    onSetSidebarOpen={this.onSetSidebarOpen}
+                    sidebarDocked={this.state.sidebarDocked}
+                />
                 <main id='main' style={mapStyle} >
                     <GoogleMap
-                        mapHeight={this.state.mapHeight}
                         restaurants={this.state.restaurants}
-                        sidebarDocked={this.state.sidebarDocked}
                         currSelectedListId={this.state.currSelectedListId}
                         setCurrMarkerId={this.setCurrMarkerId}
                     />
