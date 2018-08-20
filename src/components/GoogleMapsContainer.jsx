@@ -9,30 +9,13 @@ class GoogleMapsContainer extends React.Component {
         selectedPlace: {},
         mapWidth: 0,
         mapHeight: 0,
-        currVenue: null,
-        // allMarkers: []
+        currVenue: null
     }
-
-    // allMarkers = []
 
     componentDidMount(){
         this.getMapDimensions()
         // Make the Google map responsive.
         window.addEventListener('resize', this.getMapDimensions)
-        document.querySelectorAll('li').forEach(element => element.addEventListener('click', this.handleListClick))
-    }
-
-    handleListClick = (e) => {
-        let listId = e.target.id
-        // In Search.jsx, lists' ids have extra 'li' characters in order to differentiate them from Markers' ids, 
-        listId = listId.substring(0, listId.length-2)
-        console.log(listId)
-        // this.allMarkers.reverse().forEach(marker => {
-        //     if (marker.props.id === listId) {
-        //         marker.props.onClick()
-        //     }
-        // })
-        console.log(document.getElementById(listId))
     }
 
     getMapDimensions = () => {
@@ -53,7 +36,6 @@ class GoogleMapsContainer extends React.Component {
             activeMarker: marker,
             showingInfoWindow: true
         })
-        // console.log('props, props.id', props, props.id)
         // Transfer clicked marker's id to the parent component
         this.props.setCurrMarkerId(props.id)
         fetch(this.getRequestString(props.id))
@@ -103,28 +85,25 @@ class GoogleMapsContainer extends React.Component {
                                     : undefined
         }
 
-        const style = {
+        const mapStyle = {
             width: this.props.sidebarDocked ? `${this.state.mapWidth}px` : '100%',
             height: `${this.state.mapHeight}px`
         }
 
-        console.log(this.state)
-
         return (
             <Map
-                item
-                xs = { 12 }
-                style = { style }
+                style = { mapStyle }
                 google = { this.props.google }
                 onClick = { this.onMapClick }
                 zoom = { 13 }
                 initialCenter = {{ lat: 40.7359, lng: -73.9911 }}
             >
-                { this.props.restaurants.map(r => 
+                { this.props.restaurants.map(r =>
                     <Marker 
                     key={ r.id }
                     id={ r.id }
-                    // ref={ele => this.allMarkers = ele}
+                    // If the marker's corresponding list is clicked, then show the animation.
+                    animation={this.props.currSelectedListId === r.id ? this.props.google.maps.Animation.DROP : undefined}
                     onClick = { this.onMarkerClick }
                     title = { r.name }
                     address = { r.location.formattedAddress[0] }

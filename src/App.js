@@ -14,7 +14,8 @@ class App extends Component {
         sidebarDocked: mql.matches,
         sidebarOpen: false,
         restaurants: Data.getData(),
-        currMarkerId: null
+        currMarkerId: null,
+        currSelectedListId: null
     }
 
     componentWillMount() {
@@ -35,9 +36,24 @@ class App extends Component {
     
     onSetSidebarOpen = (open) => {
         this.setState({ sidebarOpen: open })
-    }     
+    }
+
+    updateSelectedListId = (id) => {
+        this.setState({currSelectedListId: id})
+    }
+
+    handleInputChange = (query) => {
+        const filteredRestaurants = []
+        const term = query.replace(/[^\w\s]/gi, '').toLowerCase()
+        const data = Data.getData()
+        data.forEach(restaurant => {
+            restaurant.name.toLowerCase().includes(term) && filteredRestaurants.push(restaurant)
+        })
+        this.setState({restaurants: filteredRestaurants})
+    }
 
     render() {
+        // console.log(this.state.currSelectedListId)
         const mapStyle = {
             position: 'fixed',
             width: '100%',
@@ -48,8 +64,11 @@ class App extends Component {
             <Sidebar
                 sidebar={
                     <Search
-                    restaurants={this.state.restaurants}
-                    currMarkerId={this.state.currMarkerId}
+                        restaurants={this.state.restaurants}
+                        currMarkerId={this.state.currMarkerId}
+                        updateSelectedListId={this.updateSelectedListId}
+                        setCurrMarkerId={this.setCurrMarkerId}
+                        handleInputChange={this.handleInputChange}
                     />
                 }
                 open={this.state.sidebarOpen}
@@ -62,6 +81,7 @@ class App extends Component {
                         mapHeight={this.state.mapHeight}
                         restaurants={this.state.restaurants}
                         sidebarDocked={this.state.sidebarDocked}
+                        currSelectedListId={this.state.currSelectedListId}
                         setCurrMarkerId={this.setCurrMarkerId}
                     />
                 </main>

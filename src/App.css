@@ -1,15 +1,10 @@
-body {
-    /* margin: 0;
-    padding: 0;  */
-    font-family: sans-serif;
-  }
+@import url('https://fonts.googleapis.com/css?family=Lobster');
 
 html, body {
   height: 100%;
   width: 100%;
-  /* max-width: 1600px; */
   margin: 0;
-  /* padding: 0; */
+  font-family: sans-serif;
 }
 
 #sidebarcontent {
@@ -29,7 +24,12 @@ html, body {
 
 #search {
   margin: 1em auto;
+  text-align: center;
 }
+
+/* #search input {
+  margin: 0 auto;
+} */
 
 ul {
   padding: 0 0;
@@ -54,16 +54,18 @@ li:hover {
 h1 {
   margin: 0;
   padding: 0;
+  text-align: center;
 }
 
 .title {
   padding: 0.5em 0;
   background-color: gold;
+  font-family: 'Lobster', cursive;
 }
 
 #menubar {
   max-height: 29px;
-  margin: 0 0.5em;
+  margin: 0 0;
 }
 
 .title button {
@@ -87,6 +89,7 @@ h1 {
 
 li.clicked {
   background: gold;
+  color: black;
 }
 
 .dollarsign {
@@ -110,9 +113,37 @@ footer p {
   font-size: 75%;
 }
 
-/* #sidebarcontent .title {
-  position: fixed;
-  right: 0;
-  top: 0;
-  left: 0;
-} */
+#titlecontent {
+  display:flex;
+  flex-wrap:nowrap;
+  align-items:center; /* vertical align */
+}
+
+#titlecontent #headertext {
+  flex-grow:1;       /* take up rest of line */
+  text-align:center; /* centre text in p */
+}
+
+#input {
+  height: 2em;
+  width: 90%;
+  border: 1px solid rgb(196, 193, 193);
+  font-size: 0.8em;
+  /* text-align: center; */
+}
+
+button:focus, button:active{
+  outline: none !important;
+  border:1px solid gold;
+  box-shadow: 0 0 10px gold;
+}
+
+#input:focus {
+  outline: none !important;
+  border:1px solid rgb(177, 174, 174);
+  box-shadow: 0 0 10px gold;
+}
+
+ul:first-child {
+  border-top: 1px solid rgba(255,215,0,0.5);
+}

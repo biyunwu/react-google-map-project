@@ -37,7 +37,7 @@ export const getData = () => [
     },
     {
         "id": "547d03e3498eb32c879589da",
-        "name": "Kang Ho Dong Baekjeong",
+        "name": "Baekjeong",
         "location": {
             "lat": 40.74709879834891,
             "lng": -73.98519423416221,
@@ -70,5 +70,53 @@ export const getData = () => [
                 "New York, NY 10002"
             ]
         }
+    },
+    {
+        "id": "49c42857f964a5209f561fe3",
+        "name": "Lobster Place",
+        "location": {
+            "lat": 40.7424407679208,
+            "lng": -74.00612169096566,
+            "formattedAddress": [
+                "75 9th Ave (btwn W 15th & W 16th St)",
+                "New York, NY 10011"
+            ]
+        }
+    },
+    {
+        "id": "49c43598f964a520ad561fe3",
+        "name": "ilili",
+        "location": {
+            "lat": 40.74433537661916,
+            "lng": -73.98753967578142,
+            "formattedAddress": [
+                "236 5th Ave (btwn E 27th & E 28th St)",
+                "New York, NY 10001"
+            ]
+        }
+    },
+    {
+        "id": "49fe4b0df964a5208c6f1fe3",
+        "name": "Ramen Takumi",
+        "location": {
+            "lat": 40.73069054542069,
+            "lng": -73.99549625398208,
+            "formattedAddress": [
+                "1 University Pl (at Waverly Pl)",
+                "New York, NY 10003"
+            ]
+        }
+    },
+    {
+        "id": "3fd66200f964a520cee91ee3",
+        "name": "La Lanterna di Vittorio",
+        "location": {
+            "lat": 40.73064081178975,
+            "lng": -74.00013663852398,
+            "formattedAddress": [
+                "129 Macdougal St (btwn 3rd & 4th St)",
+                "New York, NY 10012"
+            ]
+        }
     }
-]
+].sort((a, b) =>  b.location.lat - a.location.lat)

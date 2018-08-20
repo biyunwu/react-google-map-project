@@ -6,7 +6,7 @@ export default class Header extends Component {
         return(
             <header id='header'>
                 <div className='title'>
-                    <h1>
+                    <h1 id='titlecontent'>
                         <button onClick={() => this.props.onSetSidebarOpen(true)}>
                             <img id='menubar' src={Burger} alt='Menu icon'/>
                         </button>
