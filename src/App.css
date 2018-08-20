@@ -122,6 +122,10 @@ footer p {
 #titlecontent #headertext {
   flex-grow:1;       /* take up rest of line */
   text-align:center; /* centre text in p */
+  /* Prevent line break */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #input {
