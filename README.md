@@ -1,4 +1,4 @@
-# [Neighbourhood Map](https://biyunwu.com/react-neighbourhood-map/)
+# [Favorite Restaurants in NYC](https://biyunwu.com/react-neighbourhood-map/)
 
 ## Intriduction
 
