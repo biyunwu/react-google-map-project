@@ -10,7 +10,7 @@ export default class Header extends Component {
                         <button onClick={() => this.props.onSetSidebarOpen(true)}>
                             {!this.props.sidebarDocked && <img id='menubar' src={Burger} alt='Menu icon'/>}
                         </button>
-                        <span id='headertext'>Fav. Restaurants in NYC</span>
+                        <span id='headertext'>Fav. Restaurants NYC</span>
                     </h1>
                 </div>
             </header>
