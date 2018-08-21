@@ -156,3 +156,12 @@ ul:first-child {
 ::-webkit-scrollbar { 
   display: none; 
 }
+
+/* a:active{
+  outline: 0;
+  border: none;
+} */
+
+#sidebarcontent a {
+  outline: 0;
+}

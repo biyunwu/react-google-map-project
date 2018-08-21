@@ -37,11 +37,16 @@ export default class Search extends Component {
                             </li>
                         )}
                     </ul>
-                    <img
-                        id='git-icon' src={GitHubIcon}
-                        alt="GitHub icon which is also a link to the repository of this project"
+                    <a 
+                        href='https://github.com/biyunwu/react-neighbourhood-map'
                         tabIndex={restaurants.length+2}
-                    />
+                        target="_blank"
+                    >
+                        <img
+                            id='git-icon' src={GitHubIcon}
+                            alt="GitHub icon which is also a link to the repository of this project"
+                        />
+                    </a>
                 </div>
                 <footer>
                         <p>Powered by Google Map and Foursquare</p>
