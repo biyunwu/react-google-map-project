@@ -1,6 +1,6 @@
 # [My Favorite Restaurants in NYC](https://biyunwu.com/react-neighbourhood-map/)
 
-## Intriduction
+## Introduction
 
   This is the final project of my Udacity Front-end Nanodegree program which is funded by Google Scholarship.
 
@@ -65,7 +65,8 @@ This project is designed to be responsive. When the width of the viewport is equ
 ### Sidebar
 
 * Search. The search field accepts users' inputs to filter matching result. The markers are updated simultaneously.
-* Click list item. Clicking any list item in the sidebar trigers the corresponding marker's drop animation as the following gif shows.
+* List. The list items (restaurants' names) are sorted by restaurants' locations from north to south.
+* Click list items. Clicking any list item in the sidebar trigers the corresponding marker's drop animation as the following gif shows.
 
 ![A gif shows the list item is clicked, and the corresponding marker animates](./src/imgs/click-list-ainimation.gif)
 
