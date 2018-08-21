@@ -129,7 +129,7 @@ footer p {
   width: 90%;
   border: 1px solid rgb(196, 193, 193);
   font-size: 0.8em;
-  /* text-align: center; */
+  text-align: center;
 }
 
 button:focus, button:active{
