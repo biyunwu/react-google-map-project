@@ -13,12 +13,12 @@ class GoogleMapsContainer extends React.Component {
     }
 
     componentDidMount(){
-        this.getMapDimensions()
+        this.setMapDimensions()
         // Make the Google map responsive.
-        window.addEventListener('resize', this.getMapDimensions)
+        window.addEventListener('resize', this.setMapDimensions)
     }
 
-    getMapDimensions = () => {
+    setMapDimensions = () => {
         const headerHeight = Math.max(document.getElementById('header').clientHeight || 0)
         const footerHeight = Math.max(document.getElementById('footer').clientHeight || 0)
         const viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
@@ -39,6 +39,7 @@ class GoogleMapsContainer extends React.Component {
         })
         // Transfer clicked marker's id to the parent component
         this.props.setCurrMarkerId(props.id)
+        this.props.updateSelectedListId(props.id)
         fetch(this.getRequestString(props.id))
             .then(this.checkResponse)
             .then(dt => dt && dt.response && dt.response.venue ? dt.response.venue : null)
@@ -121,7 +122,7 @@ class GoogleMapsContainer extends React.Component {
                 >
                     <div>
                         <p>
-                            <b><a href={venueInfo.url}>{this.state.selectedPlace.name}</a></b>
+                            <b><a href={venueInfo.url} target="_blank">{this.state.selectedPlace.name}</a></b>
                             <span className='dollarsign'>{venueInfo.price}</span>
                         </p>
                         {venueInfo.category && <p>Style: {venueInfo.category}</p>}

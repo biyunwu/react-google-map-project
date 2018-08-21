@@ -11,15 +11,11 @@ const mql = window.matchMedia(`(min-width: 800px)`)
 
 class App extends Component {
     state = {
-        sidebarDocked: mql.matches,
+        sidebarDocked: mql.matches, // Listen on window size.
         sidebarOpen: false,
-        restaurants: Data.getData(),
+        restaurants: Data.getData(), // Get restaurants' basic info
         currMarkerId: null,
         currSelectedListId: null
-    }
-
-    componentDidMount(){
-        window.addEventListener('click', e => console.log(e.target))
     }
 
     componentWillMount() {
