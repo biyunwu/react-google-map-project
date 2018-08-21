@@ -2,7 +2,9 @@
   "name": "google-map",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://biyunwu.github.io/react-neighbourhood-map",
   "dependencies": {
+    "gh-pages": "^1.2.0",
     "google-maps-react": "^2.0.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
@@ -10,6 +12,8 @@
     "react-sidebar": "^3.0.2"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
