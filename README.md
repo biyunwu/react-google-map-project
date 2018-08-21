@@ -32,7 +32,7 @@
 
 ## Run the Project
 
-### Run in dev mode:
+### Run in dev modeg
 
 * Clone or download the project.
 * Use `$ npm install` command to install all the dependencies.
@@ -56,7 +56,7 @@ This project is designed to be responsive. When the width of the viewport is equ
 
 * Clicking any marker (restaurant) on the map trigers a fetching execution to get detailed info about the restaurant from Foursquare.
 
-* Then, the filtered info will be shown in the marker's info window. The info includes the restaurant's name, pricing tier, ethnic or regional flavor, rating, dilivery info, contact and address. Besides, the restaurant's official website and third party delivery wensite address are available, they are going to be embeded in the corresponding texts.
+* Then, the filtered info will be shown in the marker's info window. The info includes the restaurant's name, pricing tier, ethnic or regional flavor, rating, dilivery info, contact and address. Besides, if the restaurant's official website and third party delivery options are available, they are going to be embeded in the corresponding texts.
 
 * After the marker is cliked, the corresponding list item's backgorund in the sidebar changes.
 
