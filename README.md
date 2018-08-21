@@ -2,7 +2,7 @@
 
 ## Intriduction
 
-  This is the final project of my Udacity Front-end Nanodegree program which is offered by Google Scholarship.
+  This is the final project of my Udacity Front-end Nanodegree program which is funded by Google Scholarship.
 
   The project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) and powered by Google Maps and Foursquare APIs.
 
@@ -40,7 +40,7 @@
 
 ## Responsiveness and Layout
 
-The website is quit responsive. When the viewport is equal to or above 800px, the sidebar is docked and the burger icon in the header is hidden automatically. Otherwise, the sidebar is hidden and the burger icon works. See the below images for more details.
+This project is designed to be responsive. When the width of the viewport is equal to or above 800px, the sidebar is docked and the burger icon in the header is hidden automatically. Otherwise, the sidebar is hidden and the burger icon is visible. See the below images for more details.
 
 ### Desktop Version
 
@@ -54,9 +54,9 @@ The website is quit responsive. When the viewport is equal to or above 800px, th
 
 ### Marker
 
-* Clicking any marker (restaurant) on the map trigers a fetching execution to get detailed info about the restaurant fron Foursquare. 
+* Clicking any marker (restaurant) on the map trigers a fetching execution to get detailed info about the restaurant from Foursquare.
 
-* Then, the filtered info will be showed in the marker's info window. The info includes the restaurant's name, pricing tier, ethnic, rating, dilivery info, contact and address. Besides, the restaurant's official website and third party delivery wensite address are available, they are going to be embeded in the corresponding texts. 
+* Then, the filtered info will be shown in the marker's info window. The info includes the restaurant's name, pricing tier, ethnic or regional flavor, rating, dilivery info, contact and address. Besides, the restaurant's official website and third party delivery wensite address are available, they are going to be embeded in the corresponding texts.
 
 * After the marker is cliked, the corresponding list item's backgorund in the sidebar changes.
 
@@ -64,14 +64,14 @@ The website is quit responsive. When the viewport is equal to or above 800px, th
 
 ### Sidebar
 
-* Search. The search field accepts users' inputs to filter matching result. The markers are updating synchronously.
+* Search. The search field accepts users' inputs to filter matching result. The markers are updated simultaneously.
 * Click list item. Clicking any list item in the sidebar trigers the corresponding marker's drop animation as the following gif shows.
 
 ![A gif shows the list item is clicked, and the corresponding marker animates](./src/imgs/click-list-ainimation.gif)
 
 ### Warning
 
-Beacause of the limited quota of Foursquare. The info window may only show the restaurant's basic info. In this situation, the footer changes the background to red along with warning text as the following image shows.
+Beacause of the limited quota of Foursquare, the info window may only show the restaurant's basic info. In this situation, the footer changes the background to red along with a warning as the following image shows.
 
 ![Quota exceeded](./src/imgs/quota-exceeded.png)
 
