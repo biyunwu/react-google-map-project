@@ -88,6 +88,10 @@ li.clicked {
   color: black;
 }
 
+li:active, li:focus{
+  outline: 0;
+}
+
 .dollarsign {
   color: red;
   margin-left: 1em;
