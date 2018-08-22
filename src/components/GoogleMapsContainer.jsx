@@ -5,17 +5,22 @@ import { GoogleApiWrapper, InfoWindow, Map, Marker } from 'google-maps-react';
 class GoogleMapsContainer extends React.Component {
     state = {
         showingInfoWindow: false,
+        // showSimpleInfoWindow: true,
         activeMarker: {},
         selectedPlace: {},
         mapWidth: 0,
         mapHeight: 0,
-        currVenue: null
+        currVenue: null,
     }
 
     componentDidMount(){
         this.setMapDimensions()
         // Make the Google map responsive.
         window.addEventListener('resize', this.setMapDimensions)
+        // If the any list item (restaurant) is clicked, set 'showingInfoWindow' to false in order to show the basic InfoWindow
+        document.querySelectorAll('li').forEach( li => 
+            li.addEventListener('click', () => this.state.showingInfoWindow && this.setState({showingInfoWindow: false}))
+        )
     }
 
     setMapDimensions = () => {
@@ -35,7 +40,7 @@ class GoogleMapsContainer extends React.Component {
         this.setState({
             selectedPlace: props,
             activeMarker: marker,
-            showingInfoWindow: true
+            showingInfoWindow: true,
         })
         // Transfer clicked marker's id to the parent component
         this.props.setCurrMarkerId(props.id)
@@ -57,7 +62,7 @@ class GoogleMapsContainer extends React.Component {
     checkResponse = (res) => {
         if (res.ok) {
             if(document.getElementById('footer').style.backgroundColor === 'red'){
-                document.getElementById('footertext').innerHTML = `<p id='footertext'>Developed with appetite by <a target="_blank" href='https://biyunwu.com'>Biyun Wu</a>.</p>`
+                document.getElementById('footertext').innerHTML = `<p id='footertext'>Developed with appetite by <a target="_blank" href='https://biyunwu.com' rel="noopener noreferrer">Biyun Wu</a>.</p>`
                 document.getElementById('footer').style.backgroundColor = 'gold'
             }
             return res.json()
@@ -69,19 +74,22 @@ class GoogleMapsContainer extends React.Component {
     }
 
     onMapClick = (props) => {
-        if (this.state.showingInfoWindow) {
-            this.setState({
-                showingInfoWindow: false,
-                activeMarker: null
-            })
-        }
+        this.setState({
+            showingInfoWindow: false,
+            activeMarker: null
+        })
         this.props.updateSelectedListId(null)
         this.props.setCurrMarkerId(null)
+    }
+
+    closeInfoWindow = () => {
+        this.setState({showingInfoWindow: false})
     }
 
     getRequestString = (id) => `https://api.foursquare.com/v2/venues/${id}?&client_id=LRYG3OLF2LZTRVK3JFNX22XED5SGGA1P32BIHPG5RYGXMLDO&client_secret=GKJMX3KNN1V5W3SLTB1QPVWQXCNG533GKAXJ1VK0ATWI5SIL&v=20180817&limit=1`
 
     render() {
+        const basicMarkerData = this.props.currBasicMarkerData
         const currVenue = this.state.currVenue
         const selectedPlace = this.state.selectedPlace
         const venueInfo = {}
@@ -96,6 +104,39 @@ class GoogleMapsContainer extends React.Component {
                                     ? currVenue.delivery.url
                                     : undefined
         }
+
+        const infoWindow = 
+            basicMarkerData && basicMarkerData.id !== this.state.selectedPlace.id
+            ?
+                <InfoWindow
+                    position = { { lat: basicMarkerData.location.lat + 0.001, lng: basicMarkerData.location.lng } }
+                    visible = { !this.state.showingInfoWindow }
+                    onClose={this.closeInfoWindow}
+                >
+                    <div>
+                        <p>{ basicMarkerData.name }</p>
+                        <p>{ basicMarkerData.location.formattedAddress[0] }</p>
+                        <p style={{fontSize: '70%'}}>* Click the marker for more detailed info.</p>
+                    </div>
+                </InfoWindow>
+            :
+            <InfoWindow
+                marker = { this.state.activeMarker }
+                visible = { this.state.showingInfoWindow }
+                onClose={this.closeInfoWindow}
+            >
+                <div>
+                    <p>
+                        <b><a href={venueInfo.url} target="_blank">{this.state.selectedPlace.name}</a></b>
+                        <span className='dollarsign'>{venueInfo.price}</span>
+                    </p>
+                    {venueInfo.category && <p>Style: {venueInfo.category}</p>}
+                    {venueInfo.rating && <p>Rating: {venueInfo.rating}</p>}
+                    {venueInfo.delivery && <p><a href={venueInfo.delivery}>Delivery Available</a></p>}
+                    {venueInfo.phone && <p>{venueInfo.phone}</p>}
+                    <p>{this.state.selectedPlace.address}</p>
+                </div>
+            </InfoWindow>
 
         const mapStyle = {
             width: this.props.sidebarDocked ? `${this.state.mapWidth}px` : '100%',
@@ -123,23 +164,8 @@ class GoogleMapsContainer extends React.Component {
                     name = { r.name }
                     />
                 )}
-                
-                <InfoWindow
-                    marker = { this.state.activeMarker }
-                    visible = { this.state.showingInfoWindow }
-                >
-                    <div>
-                        <p>
-                            <b><a href={venueInfo.url} target="_blank">{this.state.selectedPlace.name}</a></b>
-                            <span className='dollarsign'>{venueInfo.price}</span>
-                        </p>
-                        {venueInfo.category && <p>Style: {venueInfo.category}</p>}
-                        {venueInfo.rating && <p>Rating: {venueInfo.rating}</p>}
-                        {venueInfo.delivery && <p><a href={venueInfo.delivery}>Delivery Available</a></p>}
-                        {venueInfo.phone && <p>{venueInfo.phone}</p>}
-                        <p>{this.state.selectedPlace.address}</p>
-                    </div>
-                </InfoWindow>
+
+                { infoWindow }
             </Map>
         )
     }

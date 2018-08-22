@@ -15,7 +15,9 @@ class App extends Component {
         sidebarOpen: false,
         restaurants: Data.getData(), // Get restaurants' basic info
         currMarkerId: null,
-        currSelectedListId: null
+        currSelectedListId: null,
+        // showSimpleInfoWindow: true
+        currBasicMarkerData: null
     }
 
     componentWillMount() {
@@ -39,8 +41,14 @@ class App extends Component {
     }
 
     updateSelectedListId = (id) => {
-        this.setState({currSelectedListId: id})
+        const currBasicMarkerData = this.state.restaurants.find(r => r.id === id)
+        // this.setState({currSelectedListId: id, showSimpleInfoWindow: true})
+        this.setState({currSelectedListId: id, currBasicMarkerData: currBasicMarkerData})
     }
+
+    // closeSimpleInfoWindow = () => {
+    //     this.setState({showSimpleInfoWindow: false})
+    // }
 
     handleInputChange = (query) => {
         const filteredRestaurants = []
@@ -84,8 +92,11 @@ class App extends Component {
                         sidebarDocked={this.state.sidebarDocked}
                         restaurants={this.state.restaurants}
                         currSelectedListId={this.state.currSelectedListId}
+                        currBasicMarkerData={this.state.currBasicMarkerData}
+                        // showSimpleInfoWindow={this.state.showSimpleInfoWindow}
                         setCurrMarkerId={this.setCurrMarkerId}
                         updateSelectedListId={this.updateSelectedListId}
+                        // closeSimpleInfoWindow={this.closeSimpleInfoWindow}
                     />
                 </main>
                 <Footer />

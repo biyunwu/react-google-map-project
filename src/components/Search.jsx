@@ -41,6 +41,7 @@ export default class Search extends Component {
                         href='https://github.com/biyunwu/react-neighbourhood-map'
                         tabIndex={restaurants.length+2}
                         target="_blank"
+                        rel="noopener noreferrer"
                     >
                         <img
                             id='git-icon' src={GitHubIcon}
