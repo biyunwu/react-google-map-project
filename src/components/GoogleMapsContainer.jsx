@@ -40,16 +40,24 @@ class GoogleMapsContainer extends React.Component {
         // Transfer clicked marker's id to the parent component
         this.props.setCurrMarkerId(props.id)
         this.props.updateSelectedListId(props.id)
+        this.checkInternetConnection()
         fetch(this.getRequestString(props.id))
             .then(this.checkResponse)
             .then(dt => dt && dt.response && dt.response.venue ? dt.response.venue : null)
             .then(venue => this.setState({currVenue: venue}))
     }
 
+    checkInternetConnection = () => {
+        if (!navigator.onLine) {
+            document.getElementById('footer').style.backgroundColor = 'red'
+            document.getElementById('footertext').innerText = 'Internet connection failed!'
+        }
+    }
+
     checkResponse = (res) => {
         if (res.ok) {
             if(document.getElementById('footer').style.backgroundColor === 'red'){
-                document.getElementById('footertext').innerHTML = `<p id='footertext'>Developed with appetite by <a href='https://biyunwu.com'>Biyun Wu</a>.</p>`
+                document.getElementById('footertext').innerHTML = `<p id='footertext'>Developed with appetite by <a target="_blank" href='https://biyunwu.com'>Biyun Wu</a>.</p>`
                 document.getElementById('footer').style.backgroundColor = 'gold'
             }
             return res.json()
