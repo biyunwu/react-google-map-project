@@ -20,6 +20,10 @@ class App extends Component {
         currBasicMarkerData: null
     }
 
+    componentDidMount() {
+        this.checkInternetConnection();
+    }
+
     componentWillMount() {
         mql.addListener(this.mediaQueryChanged);
     }
@@ -60,6 +64,13 @@ class App extends Component {
         this.setState({restaurants: filteredRestaurants})
     }
 
+    checkInternetConnection = () => {
+        if (!navigator.onLine) {
+            document.getElementById('footer').style.backgroundColor = 'red'
+            document.getElementById('footertext').innerText = 'Internet connection failed!'
+        }
+    }
+
     render() {
         // console.log(this.state.currSelectedListId)
         const mapStyle = {
@@ -97,6 +108,7 @@ class App extends Component {
                         setCurrMarkerId={this.setCurrMarkerId}
                         updateSelectedListId={this.updateSelectedListId}
                         // closeSimpleInfoWindow={this.closeSimpleInfoWindow}
+                        checkInternetConnection={this.checkInternetConnection}
                     />
                 </main>
                 <Footer />

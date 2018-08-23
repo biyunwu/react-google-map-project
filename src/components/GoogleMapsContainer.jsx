@@ -19,7 +19,7 @@ class GoogleMapsContainer extends React.Component {
         window.addEventListener('resize', this.setMapDimensions)
         // If the any list item (restaurant) is clicked, set 'showingInfoWindow' to false in order to show the basic InfoWindow
         document.querySelectorAll('li').forEach( li => 
-            li.addEventListener('click', () => this.state.showingInfoWindow && this.setState({showingInfoWindow: false}))
+            li.addEventListener('click', () => this.setState({selectedPlace: {}, showingInfoWindow: false}))
         )
     }
 
@@ -45,18 +45,12 @@ class GoogleMapsContainer extends React.Component {
         // Transfer clicked marker's id to the parent component
         this.props.setCurrMarkerId(props.id)
         this.props.updateSelectedListId(props.id)
-        this.checkInternetConnection()
+        this.props.checkInternetConnection()
         fetch(this.getRequestString(props.id))
             .then(this.checkResponse)
             .then(dt => dt && dt.response && dt.response.venue ? dt.response.venue : null)
             .then(venue => this.setState({currVenue: venue}))
-    }
-
-    checkInternetConnection = () => {
-        if (!navigator.onLine) {
-            document.getElementById('footer').style.backgroundColor = 'red'
-            document.getElementById('footertext').innerText = 'Internet connection failed!'
-        }
+            .catch(err => console.log('Failed to fetch info from Foursquare.', err))
     }
 
     checkResponse = (res) => {
@@ -83,7 +77,7 @@ class GoogleMapsContainer extends React.Component {
     }
 
     closeInfoWindow = () => {
-        this.setState({showingInfoWindow: false})
+        this.setState({selectedPlace: {}, showingInfoWindow: false})
     }
 
     getRequestString = (id) => `https://api.foursquare.com/v2/venues/${id}?&client_id=LRYG3OLF2LZTRVK3JFNX22XED5SGGA1P32BIHPG5RYGXMLDO&client_secret=GKJMX3KNN1V5W3SLTB1QPVWQXCNG533GKAXJ1VK0ATWI5SIL&v=20180817&limit=1`
@@ -109,9 +103,9 @@ class GoogleMapsContainer extends React.Component {
             basicMarkerData && basicMarkerData.id !== this.state.selectedPlace.id
             ?
                 <InfoWindow
-                    position = { { lat: basicMarkerData.location.lat + 0.001, lng: basicMarkerData.location.lng } }
+                    position = { { lat: basicMarkerData.location.lat + 0.0013, lng: basicMarkerData.location.lng } }
                     visible = { !this.state.showingInfoWindow }
-                    onClose={this.closeInfoWindow}
+                    // onClose={this.closeInfoWindow}
                 >
                     <div>
                         <p>{ basicMarkerData.name }</p>
@@ -123,7 +117,7 @@ class GoogleMapsContainer extends React.Component {
             <InfoWindow
                 marker = { this.state.activeMarker }
                 visible = { this.state.showingInfoWindow }
-                onClose={this.closeInfoWindow}
+                // onClose={this.closeInfoWindow}
             >
                 <div>
                     <p>
@@ -148,7 +142,7 @@ class GoogleMapsContainer extends React.Component {
                 style = { mapStyle }
                 google = { this.props.google }
                 onClick = { this.onMapClick }
-                zoom = { 13 }
+                zoom = { 14 }
                 initialCenter = {{ lat: 40.7359, lng: -73.9951 }}
             >
                 { this.props.restaurants.map(r =>

@@ -88,6 +88,7 @@ li.clicked {
   color: black;
 }
 
+// Hide the outline for better presentation
 li:active, li:focus{
   outline: 0;
 }

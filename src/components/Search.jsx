@@ -4,7 +4,6 @@ import GitHubIcon from '../GitHub.png'
 export default class Search extends Component {
 
     handleListClick = (e) => {
-        // console.log(e.target.id)
         this.props.updateSelectedListId(e.target.id)
         this.props.setCurrMarkerId(e.target.id)
     }
@@ -24,14 +23,17 @@ export default class Search extends Component {
                     />
                 </div>
                 <div id='sidebarcontent'>
-                    <ul>
+                    <ul aria-label={`A list of Biyun's favorite restaurants in New York City`} >
                         {restaurants && restaurants.map((restaurant, index) => 
                             <li
                                 key={restaurant.id}
                                 className={restaurant.id === this.props.currMarkerId? 'clicked' : undefined}
                                 id={restaurant.id}
                                 onClick={this.handleListClick}
+                                onKeyPress={this.handleListClick}
                                 tabIndex={index+1}
+                                role='menuitem'
+                                aria-label={`Clickable list item: ${restaurant.name}`}
                             >
                                 {restaurant.name}
                             </li>

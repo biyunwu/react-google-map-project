@@ -42,11 +42,11 @@
 
 This project is designed to be responsive. When the width of the viewport is equal to or above 800px, the sidebar is docked and the burger icon in the header is hidden automatically. Otherwise, the sidebar is hidden and the burger icon is visible. See the below images for more details.
 
-### Desktop Version
+* ### Desktop Version
 
 ![The desktop version of this project](./src/imgs/desktop-view.png)
 
-### Mobile Version
+* ### Mobile Version
 
 ![The mobile version of this project](./src/imgs/mobile-view.png)
 
@@ -60,21 +60,26 @@ This project is designed to be responsive. When the width of the viewport is equ
 
 * After the marker is cliked, the corresponding list item's backgorund in the sidebar changes.
 
-* Please refer to the Layout section for more details.
+* Please refer to the screenshot of the Layout section or the following Sidebar section for more details.
 
 ### Sidebar
 
 * Search. The search field accepts users' inputs to filter matching result. The markers are updated simultaneously.
 * List. The list items (restaurants' names) are sorted by restaurants' locations from north to south.
-* Click list items. Clicking any list item in the sidebar trigers the corresponding marker's drop animation as the following gif shows.
-
+* Click list items. Clicking any list item in the sidebar trigers the corresponding marker's drop animation and InfoWindow (which contains the restaurant's basic info) as the following gif shows.
 ![A gif shows the list item is clicked, and the corresponding marker animates](./src/imgs/click-list-ainimation.gif)
 
 ### Warning
 
-Beacause of the limited quota of Foursquare, the info window may only show the restaurant's basic info. In this situation, the footer changes the background to red along with a warning as the following image shows.
-
+* Foursquare API quota exceeded. Beacause of the limited quota of Foursquare, the info window may only show the restaurant's basic info. In this situation, the footer changes the background to red along with a warning as the following image shows.
 ![Quota exceeded](./src/imgs/quota-exceeded.png)
+
+* No network connection. If browser is offline on user's end, the following warning implicates that situation.
+![Connection failed](./src/imgs/connection-fail.png)
+
+## Accessibility
+
+The project use ARIA to impove accessibility.
 
 ## API
 
