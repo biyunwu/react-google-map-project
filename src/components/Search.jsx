@@ -31,7 +31,7 @@ export default class Search extends Component {
                                 id={restaurant.id}
                                 onClick={this.handleListClick}
                                 onKeyPress={this.handleListClick}
-                                tabIndex={index+1}
+                                tabIndex={0}
                                 role='menuitem'
                                 aria-label={`Clickable list item: ${restaurant.name}`}
                             >
