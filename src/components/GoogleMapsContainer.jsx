@@ -156,7 +156,7 @@ class GoogleMapsContainer extends React.Component {
                     // If the marker's corresponding list is clicked, then show the animation.
                     animation = { this.props.currSelectedListId === r.id ? this.props.google.maps.Animation.DROP : undefined }
                     onClick = { this.onMarkerClick }
-                    onMouseover = { this.state.selectedPlace.id !== r.id && this.onMouseoverMarker }
+                    onMouseover = { this.state.selectedPlace.id !== r.id ? this.onMouseoverMarker : undefined}
                     title = { r.name }
                     address = { r.location.formattedAddress[0] }
                     position = {{ lat: r.location.lat, lng: r.location.lng }}
