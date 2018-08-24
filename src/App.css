@@ -117,12 +117,15 @@ footer p {
 #titlecontent {
   display:flex;
   flex-wrap:nowrap;
-  align-items:center; /* vertical align */
+  /* vertical align */
+  align-items:center;
 }
 
 #titlecontent #headertext {
-  flex-grow:1;       /* take up rest of line */
-  text-align:center; /* centre text in p */
+  /* take up rest of line */
+  flex-grow: 1;
+  /* centre text in p */
+  text-align: center;
   /* Prevent line break */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -161,11 +164,6 @@ ul:first-child {
 ::-webkit-scrollbar { 
   display: none; 
 }
-
-/* a:active{
-  outline: 0;
-  border: none;
-} */
 
 #sidebarcontent a {
   outline: 0;

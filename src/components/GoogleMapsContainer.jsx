@@ -1,21 +1,20 @@
 import React from 'react';
 import { GoogleApiWrapper, InfoWindow, Map, Marker } from 'google-maps-react';
-// import { unwatchFile } from 'fs';
 
 class GoogleMapsContainer extends React.Component {
     state = {
         showingInfoWindow: false,
-        activeMarker: {},
-        selectedPlace: {},
-        mapWidth: 0,
-        mapHeight: 0,
-        currVenue: null,
-        mouseEnter: true
+        activeMarker: {}, // Store cliked marker obj
+        selectedPlace: {}, // Store clicked marker's associated place info
+        mapWidth: 0, // Google map
+        mapHeight: 0, // Google map
+        currVenue: null, // Store venue obj which is fetched form Foursquare
+        mouseEnter: true // Track mouse event
     }
 
     componentDidMount(){
-        this.setMapDimensions()
         // Make the Google map responsive.
+        this.setMapDimensions()
         window.addEventListener('resize', this.setMapDimensions)
         // If the any list item (restaurant) is clicked, set 'showingInfoWindow' to false in order to show the basic InfoWindow
         document.querySelectorAll('li').forEach( li => 
@@ -91,8 +90,9 @@ class GoogleMapsContainer extends React.Component {
     render() {
         const basicMarkerData = this.props.currBasicMarkerData
         const { currVenue, selectedPlace } = this.state
+        // Filter venue info to present in InfoWindow
         const venueInfo = {}
-        if (currVenue && selectedPlace && selectedPlace.id === currVenue.id) {
+        if (selectedPlace && currVenue && selectedPlace.id === currVenue.id) {
             venueInfo.url = currVenue.url ? currVenue.url : undefined
             venueInfo.price = currVenue.attributes.groups[0].summary.includes('$')
                                 ? currVenue.attributes.groups[0].summary : undefined
@@ -104,9 +104,11 @@ class GoogleMapsContainer extends React.Component {
                                     : undefined
         }
 
+        // Determine which type of InfoWindow to render based on checking props and state.
         const infoWindow = 
         basicMarkerData && basicMarkerData.id !== this.state.selectedPlace.id
             ?
+                // List items are clicked
                 <InfoWindow
                     position = { { lat: basicMarkerData.location.lat + 0.0013, lng: basicMarkerData.location.lng } }
                     visible = { !this.state.showingInfoWindow }
@@ -118,6 +120,7 @@ class GoogleMapsContainer extends React.Component {
                     </div>
                 </InfoWindow>
             :
+                // Markers are 'mouseEntered' or clicked
             <InfoWindow
                 marker = { this.state.activeMarker }
                 visible = { this.state.showingInfoWindow }
@@ -136,6 +139,7 @@ class GoogleMapsContainer extends React.Component {
                 </div>
             </InfoWindow>
 
+        // Generate google map's styling obj
         const mapStyle = {
             width: this.props.sidebarDocked ? `${ this.state.mapWidth }px` : '100%',
             height: `${ this.state.mapHeight }px`
@@ -151,16 +155,17 @@ class GoogleMapsContainer extends React.Component {
             >
                 { this.props.restaurants.map(r =>
                     <Marker 
-                    key={ r.id }
-                    id={ r.id }
-                    // If the marker's corresponding list is clicked, then show the animation.
-                    animation = { this.props.currSelectedListId === r.id ? this.props.google.maps.Animation.DROP : undefined }
-                    onClick = { this.onMarkerClick }
-                    onMouseover = { this.state.selectedPlace.id !== r.id ? this.onMouseoverMarker : undefined}
-                    title = { r.name }
-                    address = { r.location.formattedAddress[0] }
-                    position = {{ lat: r.location.lat, lng: r.location.lng }}
-                    name = { r.name }
+                        key={ r.id }
+                        id={ r.id }
+                        // If the marker's corresponding list is clicked, then show the animation.
+                        animation = { this.props.currSelectedListId === r.id ? this.props.google.maps.Animation.DROP : undefined }
+                        onClick = { this.onMarkerClick }
+                        // Prevent infinite onMouseover event
+                        onMouseover = { this.state.selectedPlace.id !== r.id ? this.onMouseoverMarker : undefined}
+                        title = { r.name }
+                        address = { r.location.formattedAddress[0] }
+                        position = {{ lat: r.location.lat, lng: r.location.lng }}
+                        name = { r.name }
                     />
                 )}
                 { infoWindow }

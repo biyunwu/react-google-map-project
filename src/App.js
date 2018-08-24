@@ -16,7 +16,6 @@ class App extends Component {
         restaurants: Data.getData(), // Get restaurants' basic info
         currMarkerId: null,
         currSelectedListId: null,
-        // showSimpleInfoWindow: true
         currBasicMarkerData: null
     }
 
@@ -46,16 +45,12 @@ class App extends Component {
 
     updateSelectedListId = (id) => {
         const currBasicMarkerData = this.state.restaurants.find(r => r.id === id)
-        // this.setState({currSelectedListId: id, showSimpleInfoWindow: true})
         this.setState({currSelectedListId: id, currBasicMarkerData: currBasicMarkerData})
     }
 
-    // closeSimpleInfoWindow = () => {
-    //     this.setState({showSimpleInfoWindow: false})
-    // }
-
     handleInputChange = (query) => {
         const filteredRestaurants = []
+        // Get rid of non-alphabetical characters
         const term = query.replace(/[^\w\s]/gi, '').toLowerCase()
         const data = Data.getData()
         data.forEach(restaurant => {
@@ -72,7 +67,6 @@ class App extends Component {
     }
 
     render() {
-        // console.log(this.state.currSelectedListId)
         const mapStyle = {
             position: 'fixed',
             width: '100%',
@@ -98,16 +92,17 @@ class App extends Component {
                     onSetSidebarOpen={this.onSetSidebarOpen}
                     sidebarDocked={this.state.sidebarDocked}
                 />
-                <main id='main' style={mapStyle} >
+                <main 
+                    id='main'
+                    style={mapStyle}
+                >
                     <GoogleMap
                         sidebarDocked={this.state.sidebarDocked}
                         restaurants={this.state.restaurants}
                         currSelectedListId={this.state.currSelectedListId}
                         currBasicMarkerData={this.state.currBasicMarkerData}
-                        // showSimpleInfoWindow={this.state.showSimpleInfoWindow}
                         setCurrMarkerId={this.setCurrMarkerId}
                         updateSelectedListId={this.updateSelectedListId}
-                        // closeSimpleInfoWindow={this.closeSimpleInfoWindow}
                         checkInternetConnection={this.checkInternetConnection}
                     />
                 </main>
