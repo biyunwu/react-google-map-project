@@ -5,12 +5,12 @@ import { GoogleApiWrapper, InfoWindow, Map, Marker } from 'google-maps-react';
 class GoogleMapsContainer extends React.Component {
     state = {
         showingInfoWindow: false,
-        // showSimpleInfoWindow: true,
         activeMarker: {},
         selectedPlace: {},
         mapWidth: 0,
         mapHeight: 0,
         currVenue: null,
+        mouseEnter: true
     }
 
     componentDidMount(){
@@ -37,20 +37,29 @@ class GoogleMapsContainer extends React.Component {
     }
 
     onMarkerClick = (props, marker, e) => {
-        this.setState({
-            selectedPlace: props,
-            activeMarker: marker,
-            showingInfoWindow: true,
-        })
-        // Transfer clicked marker's id to the parent component
-        this.props.setCurrMarkerId(props.id)
-        this.props.updateSelectedListId(props.id)
+        this.updateStateAndListItem(props, marker, e)
         this.props.checkInternetConnection()
         fetch(this.getRequestString(props.id))
             .then(this.checkResponse)
             .then(dt => dt && dt.response && dt.response.venue ? dt.response.venue : null)
             .then(venue => this.setState({currVenue: venue}))
             .catch(err => console.log('Failed to fetch info from Foursquare.', err))
+    }
+
+    onMouseoverMarker = (props, marker, e) => {
+        this.updateStateAndListItem(props, marker, e)
+    }
+
+    updateStateAndListItem = (props, marker, e) => {
+        this.setState({
+            selectedPlace: props,
+            activeMarker: marker,
+            showingInfoWindow: true,
+            mouseEnter: true
+        })
+        // Transfer marker's id to the parent component
+        this.props.setCurrMarkerId(props.id)
+        this.props.updateSelectedListId(props.id)
     }
 
     checkResponse = (res) => {
@@ -70,22 +79,18 @@ class GoogleMapsContainer extends React.Component {
     onMapClick = (props) => {
         this.setState({
             showingInfoWindow: false,
-            activeMarker: null
+            activeMarker: null,
+            mouseEnter: true
         })
         this.props.updateSelectedListId(null)
         this.props.setCurrMarkerId(null)
-    }
-
-    closeInfoWindow = () => {
-        this.setState({selectedPlace: {}, showingInfoWindow: false})
     }
 
     getRequestString = (id) => `https://api.foursquare.com/v2/venues/${id}?&client_id=LRYG3OLF2LZTRVK3JFNX22XED5SGGA1P32BIHPG5RYGXMLDO&client_secret=GKJMX3KNN1V5W3SLTB1QPVWQXCNG533GKAXJ1VK0ATWI5SIL&v=20180817&limit=1`
 
     render() {
         const basicMarkerData = this.props.currBasicMarkerData
-        const currVenue = this.state.currVenue
-        const selectedPlace = this.state.selectedPlace
+        const { currVenue, selectedPlace } = this.state
         const venueInfo = {}
         if (currVenue && selectedPlace && selectedPlace.id === currVenue.id) {
             venueInfo.url = currVenue.url ? currVenue.url : undefined
@@ -100,41 +105,40 @@ class GoogleMapsContainer extends React.Component {
         }
 
         const infoWindow = 
-            basicMarkerData && basicMarkerData.id !== this.state.selectedPlace.id
+        basicMarkerData && basicMarkerData.id !== this.state.selectedPlace.id
             ?
                 <InfoWindow
                     position = { { lat: basicMarkerData.location.lat + 0.0013, lng: basicMarkerData.location.lng } }
                     visible = { !this.state.showingInfoWindow }
-                    // onClose={this.closeInfoWindow}
                 >
                     <div>
-                        <p>{ basicMarkerData.name }</p>
+                        <p><b>{ basicMarkerData.name }</b></p>
                         <p>{ basicMarkerData.location.formattedAddress[0] }</p>
-                        <p style={{fontSize: '70%'}}>* Click the marker for more detailed info.</p>
+                        <p style={{ fontSize: '70%'}}>* Click the marker for more detailed info.</p>
                     </div>
                 </InfoWindow>
             :
             <InfoWindow
                 marker = { this.state.activeMarker }
                 visible = { this.state.showingInfoWindow }
-                // onClose={this.closeInfoWindow}
             >
                 <div>
                     <p>
-                        <b><a href={venueInfo.url} target="_blank">{this.state.selectedPlace.name}</a></b>
-                        <span className='dollarsign'>{venueInfo.price}</span>
+                        <b><a href={venueInfo.url} target="_blank">{ this.state.selectedPlace.name }</a></b>
+                        <span className='dollarsign'>{ venueInfo.price }</span>
                     </p>
-                    {venueInfo.category && <p>Style: {venueInfo.category}</p>}
-                    {venueInfo.rating && <p>Rating: {venueInfo.rating}</p>}
-                    {venueInfo.delivery && <p><a href={venueInfo.delivery}>Delivery Available</a></p>}
-                    {venueInfo.phone && <p>{venueInfo.phone}</p>}
-                    <p>{this.state.selectedPlace.address}</p>
+                    { venueInfo.category && <p>Style: { venueInfo.category }</p> }
+                    { venueInfo.rating && <p>Rating: { venueInfo.rating }</p> }
+                    { venueInfo.delivery && <p><a href={ venueInfo.delivery }>Delivery Available</a></p> }
+                    { venueInfo.phone && <p>{ venueInfo.phone }</p> }
+                    <p>{ this.state.selectedPlace.address }</p>
+                    { this.state.mouseEnter && !venueInfo.rating && <p style={{ fontSize: '70%' }}>* Click the marker for more detailed info.</p> }
                 </div>
             </InfoWindow>
 
         const mapStyle = {
-            width: this.props.sidebarDocked ? `${this.state.mapWidth}px` : '100%',
-            height: `${this.state.mapHeight}px`
+            width: this.props.sidebarDocked ? `${ this.state.mapWidth }px` : '100%',
+            height: `${ this.state.mapHeight }px`
         }
 
         return (
@@ -150,15 +154,15 @@ class GoogleMapsContainer extends React.Component {
                     key={ r.id }
                     id={ r.id }
                     // If the marker's corresponding list is clicked, then show the animation.
-                    animation={this.props.currSelectedListId === r.id ? this.props.google.maps.Animation.DROP : undefined}
+                    animation = { this.props.currSelectedListId === r.id ? this.props.google.maps.Animation.DROP : undefined }
                     onClick = { this.onMarkerClick }
+                    onMouseover = { this.state.selectedPlace.id !== r.id && this.onMouseoverMarker }
                     title = { r.name }
                     address = { r.location.formattedAddress[0] }
                     position = {{ lat: r.location.lat, lng: r.location.lng }}
                     name = { r.name }
                     />
                 )}
-
                 { infoWindow }
             </Map>
         )

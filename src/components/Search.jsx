@@ -18,6 +18,8 @@ export default class Search extends Component {
                     <input
                         id='input'
                         placeholder='Search by name'
+                        onFocus={ ele => ele.target.placeholder = ''}
+                        onBlur={ ele => ele.target.placeholder = 'Search by name'}
                         onChange={(e) => this.props.handleInputChange(e.target.value.trim())}
                         tabIndex='1'
                     />
